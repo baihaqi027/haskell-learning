@@ -61,3 +61,35 @@ personNameOrColorName (CombinedColor Green) = "Green"
 personNameOrColorName (CombinedColor Blue) = "Blue"
 personNameOrColorName (CombinedColor Pink) = "Pink"
 
+whatIsNameField :: Person -> String
+whatIsNameField p@(Person n _ _) = "The name field of (" ++ show p ++ ") is " ++ n
+
+-- Abstract Data Type List
+
+data IntList = Empty | Cons Int IntList
+     deriving Show
+
+intListku :: IntList
+intListku = Cons 5 (Cons 4 (Cons 3 (Cons 2 (Cons 1 Empty))))
+
+intListku2 :: IntList
+intListku2 = Empty
+
+intListProd :: IntList -> Int
+intListProd (Empty) = 0
+intListProd (Cons x Empty) = x * 1
+intListProd (Cons x xs) = x * intListProd xs
+
+data Tree = Leaf Int
+          | Node Tree Int Tree
+     deriving Show
+
+dummyTree :: Tree
+dummyTree = Node (Leaf 2) 1 (Node (Leaf 4) 3 (Leaf 5))
+
+findInTree :: Int -> Tree -> Bool
+findInTree i (Leaf j) = i == j
+findInTree i (Node left j right) = findInTree i left || i == j || findInTree i right
+
+
+
