@@ -91,5 +91,68 @@ findInTree :: Int -> Tree -> Bool
 findInTree i (Leaf j) = i == j
 findInTree i (Node left j right) = findInTree i left || i == j || findInTree i right
 
+-- recursive pattern polymorphism
 
+-- mapping; perform some ops on every element on the list
+
+addOneToAll :: IntList -> IntList
+addOneToAll Empty = Empty
+addOneToAll (Cons x xs) = Cons (x + 1) (addOneToAll xs)
+
+absAll :: IntList -> IntList
+absAll Empty = Empty
+absAll (Cons x xs) = Cons (abs x) (absAll xs)
+
+squareAll :: IntList -> IntList
+squareAll Empty = Empty
+squareAll (Cons x xs) = Cons (x * x) (squareAll xs)
+
+-- polymorphic map operations
+mapIntList :: (Int -> Int) -> IntList -> IntList
+mapIntList f Empty = Empty
+mapIntList f (Cons x xs) = Cons (f x) (mapIntList f xs)
+
+addOneToAll' :: IntList -> IntList
+addOneToAll' = mapIntList (+ 1)
+
+squareAll' :: IntList -> IntList
+squareAll' = mapIntList (^ 2)
+
+-- filtering input
+keepOnlyPositive :: IntList -> IntList
+keepOnlyPositive Empty = Empty
+keepOnlyPositive (Cons x xs)
+    | x > 0     = Cons x (keepOnlyPositive xs)
+    | otherwise = keepOnlyPositive xs
+
+keepOnlyEven :: IntList -> IntList
+keepOnlyEven Empty = Empty
+keepOnlyEven (Cons x xs)
+    | even x    = Cons x (keepOnlyEven xs)
+    | otherwise = keepOnlyEven xs
+
+-- filter operation polymorphic
+filterIntList :: (Int -> Bool) -> IntList -> IntList
+filterIntList _ Empty = Empty
+filterIntList p (Cons x xs)
+    | p x    = Cons x (filterIntList p xs)
+    | otherwise = filterIntList p xs
+
+-- polymorphic data type list
+data List t = E | C t (List t)
+     deriving Show
+
+-- polymorphic list map operations
+mapList :: (t -> t) -> List t -> List t
+mapList _ E = E
+mapList f (C x xs) = C (f x) (mapList f xs)
+
+-- polymorphic list filter operations
+filterList :: (t -> Bool) -> List t -> List t
+filterList _ E = E
+filterList p (C x xs)
+    | p x    = C x (filterList p xs)
+    | otherwise = filterList p xs
+
+intListPoly = C 4 (C 4 (C 2 E))
 
