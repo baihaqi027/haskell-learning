@@ -156,3 +156,34 @@ filterList p (C x xs)
 
 intListPoly = C 4 (C 4 (C 2 E))
 
+-- anonymous function example
+intListGt100Demo :: [Integer]
+intListGt100Demo = [1,9,349,6,907,98,105]
+
+gt100 :: [Integer] -> [Integer]
+gt100 [] = []
+gt100 (x:xs)
+   | x > 100   = x : (gt100 xs)
+   | otherwise = gt100 xs
+
+gt100' :: Integer -> Bool
+gt100' x = x > 100
+
+gt100'' :: [Integer] -> [Integer]
+gt100'' xs = filter gt100' xs
+
+gt100''' :: [Integer] -> [Integer]
+gt100''' xs = filter (\x -> x > 100) xs
+
+gt100'''' :: [Integer] -> [Integer]
+gt100'''' xs = filter (> 100) xs
+
+-- higher order function rewrite
+myTest :: [Integer] -> Bool
+myTest xs = even (length (gt100'''' xs))
+
+-- myTest' :: (Integer -> Bool) -> ([Integer] -> Integer) -> ([Integer] -> [Integer]) -> ([Integer] -> Bool)
+
+myTest' :: [Integer] -> Bool
+myTest' = even . length . gt100''''
+
